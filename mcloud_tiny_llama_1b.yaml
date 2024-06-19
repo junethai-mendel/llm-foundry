@@ -1,0 +1,31 @@
+# 1B LLM training config
+
+name: mpt-1b-tiny-llama-llm-foundry
+image: mosaicml/llm-foundry:2.3.0_cu121_flash2-latest
+compute:
+  gpus: 8
+  cluster: r15z1p3
+integrations:
+  - integration_type: git_repo
+    git_repo: junethai-mendel/llm-foundry
+    git_commit: v0.9.0
+    pip_install: .[gpu-flash2]
+command: >-
+  cd llm-foundry/scripts
+
+  # Convert C4 dataset to StreamingDataset format
+    python data_prep/convert_dataset_hf.py \
+    --dataset c4 --data_subset en \
+    --out_root my-copy-c4 --splits train_small val_small \
+    --concat_tokens 2048 --tokenizer EleutherAI/gpt-neox-20b --eos_text '<|endoftext|>'
+
+      
+  # Train an Tiny-Llama-1.1B model for 100 batches
+    composer train/train.py \
+    train/yamls/pretrain/tiny-llama-1b.yaml \
+    data_local=my-copy-c4 \
+    train_loader.dataset.split=train_small \
+    eval_loader.dataset.split=val_small \
+    max_duration=100ba \
+    eval_interval=0 \
+
