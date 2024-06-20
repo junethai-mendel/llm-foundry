@@ -2,8 +2,8 @@
 # this is NOT a finetuning run
 
 variables:
-  data_local: ./my-copy-c4
-  data_remote:  # If blank, files must be present in data_local
+  data_local: # ./my-copy-c4
+  data_remote: s3://mendel-databricks-temp/mds_750k_test
   tokenizer_name: TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T
   global_seed: 17
 
