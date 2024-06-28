@@ -2,7 +2,7 @@
 # this is NOT a finetuning run
 
 variables:
-  # data_local: # ./my-copy-c4
+  data_local: # ./my-copy-c4
   data_remote: s3://mendel-databricks-temp/mds_750k_test
   tokenizer_name: meta-llama/Meta-Llama-3-8B
   global_seed: 17
