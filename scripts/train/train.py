@@ -309,6 +309,7 @@ def main(cfg: DictConfig) -> Trainer:
     log.info('Building tokenizer...')
     tokenizer_name = train_cfg.tokenizer['name']
     tokenizer_kwargs = train_cfg.tokenizer.get('kwargs', {})
+    tokenizer_kwargs['use_auth_token'] = True
     tokenizer = build_tokenizer(tokenizer_name, tokenizer_kwargs)
 
     # Scheduler
@@ -449,6 +450,7 @@ def main(cfg: DictConfig) -> Trainer:
     name = model_config.pop('name')
     assert isinstance(name, str)
     assert isinstance(model_config, dict)
+    model_config['use_auth_token'] = True
     model = build_composer_model(
         name=name,
         tokenizer=tokenizer,
